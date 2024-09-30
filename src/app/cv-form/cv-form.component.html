@@ -1,0 +1,273 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center text-primary mb-4">Create Your CV</h2>
+        <form #cvForm="ngForm" (ngSubmit)="generateCV(cvForm)" novalidate>
+            <!-- Personal Information Section -->
+            <div class="mb-3">
+                <label for="language" class="form-label">Select Language:</label>
+                <select id="language" [(ngModel)]="selectedLanguage" name="language" class="form-control" required>
+                  <option value="en">English</option>
+                  <option value="fr">Français</option>
+                </select>
+                <div *ngIf="cvForm.controls['language']?.invalid && (cvForm.controls['language']?.touched || cvForm.submitted)" class="text-danger">
+                    Language selection is required.
+                </div>
+            </div>
+            <h3 class="text-info">Personal Information</h3>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name:</label>
+                        <input type="text" [(ngModel)]="personalInfo['name']" name="name" id="name" class="form-control" required placeholder="John Doe" />
+                        <div *ngIf="cvForm.controls['name']?.invalid && (cvForm.controls['name']?.touched || cvForm.submitted)" class="text-danger">
+                            Name is required.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" [(ngModel)]="personalInfo['email']" name="email" id="email" class="form-control" required placeholder="example@mail.com" #emailInput="ngModel" />
+                        <div *ngIf="emailInput.invalid && (emailInput.touched || cvForm.submitted)" class="text-danger">
+                            <div *ngIf="emailInput.errors?.['required']">Email is required.</div>
+                            <div *ngIf="emailInput.errors?.['email']">A valid email address is required.</div>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone:</label>
+                        <input type="tel" [(ngModel)]="personalInfo.phone" name="phone" id="phone" class="form-control" required placeholder="Enter phone number" pattern="[0-9]*" #phoneInput="ngModel" />
+                        <div *ngIf="phoneInput.invalid && (phoneInput.touched || phoneInput.dirty)" class="text-danger">
+                            <div *ngIf="phoneInput.errors?.['required']">Phone number is required.</div>
+                            <div *ngIf="phoneInput.errors?.['pattern']">Only numbers are allowed.</div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="linkedin" class="form-label">LinkedIn:</label>
+                        <input type="url" [(ngModel)]="personalInfo['linkedin']" name="linkedin" id="linkedin" class="form-control" required placeholder="https://linkedin.com/in/yourprofile" />
+                        <div *ngIf="cvForm.controls['linkedin']?.invalid && (cvForm.controls['linkedin']?.touched || cvForm.submitted)" class="text-danger">
+                            LinkedIn URL is required.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="github" class="form-label">GitHub (Optional):</label>
+                        <input type="url" [(ngModel)]="personalInfo.github" name="github" id="github" class="form-control" placeholder="https://github.com/yourusername" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Image Section -->
+            <h3 class="text-info">Upload Your Image</h3>
+            <div class="mb-3">
+                <input type="file" (change)="onImageSelected($event)" accept="image/*" class="form-control" />
+            </div>
+
+            <!-- Education Section -->
+            <h3 class="text-info">Education</h3>
+            <div *ngFor="let edu of education; let i = index" class="border p-3 mb-3 rounded bg-light">
+                <h4 class="text-secondary">Education {{ i + 1 }}</h4>
+                <div class="mb-3">
+                    <label for="degree{{i}}" class="form-label">Degree:</label>
+                    <input type="text" [(ngModel)]="edu.degree" name="degree{{i}}" id="degree{{i}}" class="form-control" required placeholder="BSc Computer Science" />
+                    <div *ngIf="cvForm.controls['degree' + i]?.invalid && (cvForm.controls['degree' + i]?.touched || cvForm.submitted)" class="text-danger">
+                        Degree is required.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="institution{{i}}" class="form-label">Institution:</label>
+                    <input type="text" [(ngModel)]="edu.institution" name="institution{{i}}" id="institution{{i}}" class="form-control" required placeholder="XYZ University" />
+                    <div *ngIf="cvForm.controls['institution' + i]?.invalid && (cvForm.controls['institution' + i]?.touched || cvForm.submitted)" class="text-danger">
+                        Institution is required.
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="startDate{{i}}" class="form-label">Start Date:</label>
+                        <input type="date" [(ngModel)]="edu.startDate" name="startDate{{i}}" id="startDate{{i}}" class="form-control" required />
+                        <div *ngIf="cvForm.controls['startDate' + i]?.invalid && (cvForm.controls['startDate' + i]?.touched || cvForm.submitted)" class="text-danger">
+                            Start Date is required.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="endDate{{i}}" class="form-label">End Date:</label>
+                        <input type="date" [(ngModel)]="edu.endDate" name="endDate{{i}}" id="endDate{{i}}" class="form-control" required />
+                        <div *ngIf="cvForm.controls['endDate' + i]?.invalid && (cvForm.controls['endDate' + i]?.touched || cvForm.submitted)" class="text-danger">
+                            End Date is required.
+                        </div>
+                    </div>
+                </div>
+                <button type="button" *ngIf="i >= 1" (click)="removeEducation(i)" class="btn btn-danger btn-sm">Remove Education</button>
+            </div>
+            <button type="button" (click)="addEducation()" class="btn btn-outline-info mb-3">Add Education</button>
+
+            <!-- Work Experience Section -->
+            <h3 class="text-info">Work Experience</h3>
+            <div *ngFor="let work of workExperience; let i = index" class="border p-3 mb-3 rounded bg-light">
+                <h4 class="text-secondary">Experience {{ i + 1 }}</h4>
+                <div class="mb-3">
+                    <label for="position{{i}}" class="form-label">Position:</label>
+                    <input type="text" [(ngModel)]="work.position" name="position{{i}}" id="position{{i}}" class="form-control" required placeholder="Software Engineer" />
+                    <div *ngIf="cvForm.controls['position' + i]?.invalid && (cvForm.controls['position' + i]?.touched || cvForm.submitted)" class="text-danger">
+                        Position is required.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="company{{i}}" class="form-label">Company:</label>
+                    <input type="text" [(ngModel)]="work.company" name="company{{i}}" id="company{{i}}" class="form-control" required placeholder="ABC Corp" />
+                    <div *ngIf="cvForm.controls['company' + i]?.invalid && (cvForm.controls['company' + i]?.touched || cvForm.submitted)" class="text-danger">
+                        Company is required.
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="workStartDate{{i}}" class="form-label">Start Date:</label>
+                        <input type="date" [(ngModel)]="work.startDate" name="workStartDate{{i}}" id="workStartDate{{i}}" class="form-control" required />
+                        <div *ngIf="cvForm.controls['workStartDate' + i]?.invalid && (cvForm.controls['workStartDate' + i]?.touched || cvForm.submitted)" class="text-danger">
+                            Start Date is required.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="workEndDate{{i}}" class="form-label">End Date:</label>
+                        <input type="date" [(ngModel)]="work.endDate" name="workEndDate{{i}}" id="workEndDate{{i}}" class="form-control" required />
+                        <div *ngIf="cvForm.controls['workEndDate' + i]?.invalid && (cvForm.controls['workEndDate' + i]?.touched || cvForm.submitted)" class="text-danger">
+                            End Date is required.
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="workDescription{{i}}" class="form-label">Description:</label>
+                    <textarea [(ngModel)]="work.description" name="workDescription{{i}}" id="workDescription{{i}}" class="form-control" required placeholder="Describe your role..."></textarea>
+                    <div *ngIf="cvForm.controls['workDescription' + i]?.invalid && (cvForm.controls['workDescription' + i]?.touched || cvForm.submitted)" class="text-danger">
+                        Description is required.
+                    </div>
+                </div>
+                <button type="button" *ngIf="i >= 1" (click)="removeWorkExperience(i)" class="btn btn-danger btn-sm">Remove Experience</button>
+            </div>
+            <button type="button" (click)="addWorkExperience()" class="btn btn-outline-info mb-3">Add Work Experience</button>
+
+            <!-- Skills Section -->
+            <h3 class="text-info">Skills</h3>
+            <div class="mb-3">
+                <label for="skills" class="form-label">Skills (comma-separated):</label>
+                <input type="text" [(ngModel)]="skills" name="skills" id="skills" class="form-control" required placeholder="e.g. JavaScript, Angular, Python" />
+                <div *ngIf="cvForm.controls['skills']?.invalid && (cvForm.controls['skills']?.touched || cvForm.submitted)" class="text-danger">
+                    Skills are required.
+                </div>
+            </div>
+
+            <!-- Languages Section -->
+            <h3 class="text-info">Languages Spoken</h3>
+            <div *ngFor="let lang of languagesSpoken; let i = index" class="border p-3 mb-3 rounded bg-light">
+                <h4 class="text-secondary">Language {{ i + 1 }}</h4>
+                <div class="mb-3">
+                    <label for="language{{i}}" class="form-label">Language:</label>
+                    <input type="text" [(ngModel)]="languagesSpoken[i]" name="language{{i}}" id="language{{i}}" class="form-control" required placeholder="e.g. English, Spanish" />
+                    <div *ngIf="cvForm.controls['language' + i]?.invalid && (cvForm.controls['language' + i]?.touched || cvForm.submitted)" class="text-danger">
+                        Language is required.
+                    </div>
+                </div>
+                <button type="button" *ngIf="i >= 1" (click)="removeLanguage(i)" class="btn btn-danger btn-sm">Remove Language</button>
+            </div>
+            <button type="button" (click)="addLanguage()" class="btn btn-outline-info mb-3">Add Language</button>
+
+            <!-- Projects Section -->
+            <h3 class="text-info">Projects</h3>
+            <div *ngFor="let project of projects; let i = index" class="border p-3 mb-3 rounded bg-light">
+                <h4 class="text-secondary">Project {{ i + 1 }}</h4>
+                <div class="mb-3">
+                    <label for="projectName{{i}}" class="form-label">Project Name:</label>
+                    <input type="text" [(ngModel)]="project.projectName" name="projectName{{i}}" id="projectName{{i}}" class="form-control" required placeholder="Project XYZ" />
+                    <div *ngIf="cvForm.controls['projectName' + i]?.invalid && (cvForm.controls['projectName' + i]?.touched || cvForm.submitted)" class="text-danger">
+                        Project Name is required.
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="projectStartDate{{i}}" class="form-label">Start Date:</label>
+                        <input type="date" [(ngModel)]="project.startDate" name="projectStartDate{{i}}" id="projectStartDate{{i}}" class="form-control" required />
+                        <div *ngIf="cvForm.controls['projectStartDate' + i]?.invalid && (cvForm.controls['projectStartDate' + i]?.touched || cvForm.submitted)" class="text-danger">
+                            Start Date is required.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="projectEndDate{{i}}" class="form-label">End Date:</label>
+                        <input type="date" [(ngModel)]="project.endDate" name="projectEndDate{{i}}" id="projectEndDate{{i}}" class="form-control" required />
+                        <div *ngIf="cvForm.controls['projectEndDate' + i]?.invalid && (cvForm.controls['projectEndDate' + i]?.touched || cvForm.submitted)" class="text-danger">
+                            End Date is required.
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="projectDescription{{i}}" class="form-label">Description:</label>
+                    <textarea [(ngModel)]="project.description" name="projectDescription{{i}}" id="projectDescription{{i}}" class="form-control" required placeholder="Describe your project..."></textarea>
+                    <div *ngIf="cvForm.controls['projectDescription' + i]?.invalid && (cvForm.controls['projectDescription' + i]?.touched || cvForm.submitted)" class="text-danger">
+                        Description is required.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="toolsUsed{{i}}" class="form-label">Tools Used (comma-separated):</label>
+                    <input [(ngModel)]="project.toolsUsed" name="toolsUsed{{i}}" id="toolsUsed{{i}}" class="form-control" required />
+                    <div *ngIf="cvForm.controls['toolsUsed' + i]?.invalid && (cvForm.controls['toolsUsed' + i]?.touched || cvForm.submitted)" class="text-danger">
+                        Tools Used are required.
+                    </div>
+                </div>
+                <button type="button" *ngIf="i >= 1" (click)="removeProject(i)" class="btn btn-danger btn-sm">Remove Project</button>
+            </div>
+            <button type="button" (click)="addProject()" class="btn btn-outline-info mb-3">Add Project</button>
+
+            <h3 class="text-info">Certifications (Optional)</h3>
+            <div *ngFor="let cert of certifications; let i = index" class="border p-3 mb-3 rounded bg-light">
+                <h4 class="text-secondary">Certification {{ i + 1 }}</h4>
+                <div class="mb-3">
+                    <label for="certificationName{{i}}" class="form-label">Certification Name:</label>
+                    <input type="text" [(ngModel)]="cert.title" name="certificationName{{i}}" id="certificationName{{i}}" class="form-control" placeholder="Certified Scrum Master" />
+                </div>
+                <div class="mb-3">
+                    <label for="issuingOrganization{{i}}" class="form-label">Issuing Organization:</label>
+                    <input type="text" [(ngModel)]="cert.institution" name="issuingOrganization{{i}}" id="issuingOrganization{{i}}" class="form-control" placeholder="Scrum Alliance" />
+                </div>
+                <button type="button" *ngIf="i >= 1" (click)="removeCertification(i)" class="btn btn-danger btn-sm">Remove Certification</button>
+            </div>
+            <button type="button" (click)="addCertification()" class="btn btn-outline-info mb-3">Add Certification</button>
+
+<h3 class="text-info">Organizations(Optional)</h3>
+<div *ngFor="let org of organizations; let i = index" class="border p-3 mb-3 rounded bg-light">
+    <h4 class="text-secondary">Organization {{ i + 1 }}</h4>
+    <div class="mb-3">
+        <label for="organizationName{{i}}" class="form-label">Organization Name:</label>
+        <input type="text" [(ngModel)]="org['name']" name="organizationName{{i}}" id="organizationName{{i}}" class="form-control" required placeholder="e.g. OpenAI" />
+    </div>
+    <div class="mb-3">
+        <label for="organizationRole{{i}}" class="form-label">Role:</label>
+        <input type="text" [(ngModel)]="org.role" name="organizationRole{{i}}" id="organizationRole{{i}}" class="form-control" required placeholder="e.g. Member" />
+    </div>
+  
+    <button type="button" *ngIf="i >= 1" (click)="removeOrganization(i)" class="btn btn-danger btn-sm">Remove Organization</button>
+</div>
+<button type="button" (click)="addOrganization()" class="btn btn-outline-info mb-3">Add Organization</button>
+<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  
+  
+  
+            <!-- Submit Button -->
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg">Generate CV</button>
+            </div>
+        </form>
+    </div>
+</div>
+<button type="submit" (click)="fillSampleData()" class="btn btn-primary btn-lg">Generate CV</button>
