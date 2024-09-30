@@ -108,69 +108,7 @@ selectedLanguage: any;
         this.isLoading = false;
       });
   }
-  validEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
 
-  fillSampleData() {
-    // Fill Personal Information
-    this.personalInfo = {
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      phone: '(123) 456-7890',
-      linkedin: 'https://linkedin.com/in/johndoe',
-      github: 'https://github.com/johndoe'
-    };
-
-    // Fill Education
-    this.education = [
-      { degree: 'BSc Computer Science', institution: 'XYZ University', startDate: '2015-09-01', endDate: '2019-06-01' },
-      { degree: 'MSc Software Engineering', institution: 'ABC University', startDate: '2019-09-01', endDate: '2021-06-01' }
-    ];
-
-    // Fill Work Experience
-    this.workExperience = [
-      {
-        position: 'Software Engineer',
-        company: 'Tech Company',
-        startDate: '2021-07-01',
-        endDate: 'Present',
-        description: 'Developing web applications using Angular and Node.js. Collaborated with cross-functional teams to define, design, and ship new features. Improved application performance by optimizing code and implementing best practices. Actively participated in code reviews and contributed to team knowledge sharing sessions.'
-      },
-      {
-        position: 'Intern',
-        company: 'Startup',
-        startDate: '2020-06-01',
-        endDate: '2021-06-01',
-        description: 'Assisted in software development by contributing to various projects using JavaScript and Python. Engaged in daily stand-ups and sprint planning sessions. Gained hands-on experience in Agile methodologies. Developed a small web application that improved internal communication, resulting in a 20% increase in team efficiency.'
-      }
-    ];
-
-    // Fill Skills
-    this.skills = 'JavaScript, Angular, Python, Node.js, HTML, CSS, Git, Agile methodologies';
-
-    // Fill Languages Spoken
-    this.languagesSpoken = ['English', 'Spanish','Arabe'];
-
-    // Fill Projects
-    this.projects = [
-      { projectName: 'Project A', startDate: '2022-01-01', endDate: '2022-12-01', description: 'Led the development of an e-commerce platform. Implemented responsive design and integrated payment gateways, resulting in a 30% increase in user engagement.', toolsUsed: 'Angular, Node.js, MongoDB' },
-      { projectName: 'Project B', startDate: '2023-01-01', endDate: '2023-06-01', description: 'Developed a social media application with real-time chat features. Collaborated with designers to create an intuitive user interface and ensured cross-platform functionality.', toolsUsed: 'React, Express, Socket.io' }
-    ];
-
-    // Fill Certifications
-    this.certifications = [
-      { title: 'Certified Scrum Master', institution: 'Scrum Alliance' },
-      { title: 'AWS Certified Solutions Architect', institution: 'Amazon' }
-    ];
-
-    // Fill Organizations
-    this.organizations = [
-      { name: 'Tech Innovators', role: 'Member'},
-      { name: 'Developer Community', role: 'Co-founder' }
-    ];
-}
 
 
 
