@@ -25,12 +25,12 @@ this.certifications.push({ title: '', institution: '' })
 removeCertification(index: number) {
   this.certifications.splice(index, 1);
 }
-  personalInfo = { name: '', email: '', phone: '',linkedin:'',github:'' };
+  personalInfo = { name: '', email: '', phone: '',linkedin:'',github:'',position:'' };
   education = [{ degree: '', institution: '', startDate: '', endDate: '' }];
   workExperience = [{ position: '', company: '', startDate: '', endDate: '', description: '' }];
   skills = '';
   certifications= [{ title: '', institution: '' }];
-  languagesSpoken = [''];
+  languagesSpoken = [{lang:""}];
   projects = [{ projectName: '', startDate: '', endDate: '', description: '', toolsUsed: '' }];
   selectedImage: File | null = null; // Store selected image file
 selectedLanguage: any;
@@ -64,7 +64,7 @@ selectedLanguage: any;
     this.projects.splice(index, 1);
   }
   addLanguage() {
-    this.languagesSpoken.push('');
+    this.languagesSpoken.push({lang:''});
   }
 
   isLoading: boolean = false;
@@ -104,11 +104,13 @@ selectedLanguage: any;
         link.click();
       },(error:HttpErrorResponse)=>{
         alert("error")
-        console.log(error.toString());
+        console.log(error.error);
         this.isLoading = false;
       });
   }
 
+
+  
 
 
 
