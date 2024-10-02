@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { FormcvService } from '../services/formcv.service';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
@@ -68,7 +68,7 @@ selectedLanguage: any;
   }
 
   isLoading: boolean = false;
-  generateCV(v:any) {
+  generateCV(v:NgForm) {
     const cvData = {
       personalInfo: this.personalInfo,
       education: this.education,
@@ -102,6 +102,7 @@ selectedLanguage: any;
         link.href = response.pdf;
         link.download = 'cv.pdf';
         link.click();
+        v.reset()
       },(error:HttpErrorResponse)=>{
         alert("error")
         console.log(error.error);
@@ -113,19 +114,47 @@ selectedLanguage: any;
 
 
   currentStep = 1;
-
+  errorMessage: string = '';  // Le message d'erreur
   // Navigate to the next step
-  nextStep() {
-    if (this.currentStep < 3) {
-      this.currentStep++;
+  nextStep(cvForm: NgForm) {
+    // Réinitialiser le message d'erreur à chaque tentative de validation
+    this.errorMessage = '';
+
+    if (this.currentStep === 1) {
+      if (cvForm.valid && this.selectedImage != null) {
+        this.currentStep++;
+      } else {
+        Object.keys(cvForm.controls).forEach(key => {
+          cvForm.controls[key].markAsTouched();
+        });
+        if (this.selectedImage == null) {
+          this.errorMessage = 'Please upload an image.';
+        } else {
+          this.errorMessage = 'Please fill in all required fields.';
+        }
+      }
+    } else if (this.currentStep === 2) {
+      if (cvForm.valid) {
+        this.currentStep++;
+      } else {
+        Object.keys(cvForm.controls).forEach(key => {
+          cvForm.controls[key].markAsTouched();
+        });
+        this.errorMessage = 'Please complete all required fields.';
+      }
     }
   }
+  isPage1Valid(cvForm: any): boolean {
+    const { name, email, phone } = this.personalInfo;
+    return name && email && phone && cvForm.form.valid;
+  }
 
-  // Navigate to the previous step
   previousStep() {
     if (this.currentStep > 1) {
       this.currentStep--;
     }
   }
+
+
 
 }

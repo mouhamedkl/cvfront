@@ -8,7 +8,9 @@
     <h2 class="text-center text-primary mb-4">Create Your CV</h2>
     <form #cvForm="ngForm" (ngSubmit)="generateCV(cvForm)" novalidate>
       <!-- Personal Information Section -->
-  
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
       <div *ngIf="currentStep === 1">
         <div class="mb-3">
             <label for="language" class="form-label">Select Language:</label>
@@ -70,18 +72,9 @@
                 placeholder="example@mail.com"
                 #emailInput="ngModel"
               />
-              <div
-                *ngIf="
-                  emailInput.invalid && (emailInput.touched || cvForm.submitted)
-                "
-                class="text-danger"
-              >
-                <div *ngIf="emailInput.errors?.['required']">
-                  Email is required.
-                </div>
-                <div *ngIf="emailInput.errors?.['email']">
-                  A valid email address is required.
-                </div>
+
+              <div *ngIf="cvForm.controls['email']?.touched && cvForm.controls['email']?.invalid" class="text-danger">
+                A valid email is required.
               </div>
             </div>
           </div>
@@ -751,7 +744,7 @@
       <div class="d-grid gap-2">
         <div class="d-flex justify-content-between mt-3">
             <button type="button" class="btn btn-secondary" (click)="previousStep()" *ngIf="currentStep > 1">Back</button>
-            <button type="button" class="btn btn-primary" (click)="nextStep()" *ngIf="currentStep < 3">Next</button>
+            <button type="button" class="btn btn-primary" (click)="nextStep(cvForm)" *ngIf="currentStep < 3">Next</button>
             <button type="submit" class="btn btn-success"  [disabled]="cvForm.invalid || selectedImage== null" *ngIf="currentStep === 3">Submit</button>
           </div>
       
