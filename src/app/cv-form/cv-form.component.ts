@@ -156,7 +156,7 @@ selectedLanguage: any;
         //   this.msgemail=""
         // }
         if (this.selectedImage == null) {
-          this.errorMessageimage = 'Please upload an image.';
+          this.errorMessage = 'Please upload an image.';
         } else {
           this.errorMessageimage=""
           this.errorMessage = 'Please fill in all required fields.';
@@ -180,5 +180,6 @@ selectedLanguage: any;
     }
   }
 
+ 
 
 }
