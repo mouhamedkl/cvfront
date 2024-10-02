@@ -103,6 +103,8 @@ selectedLanguage: any;
         link.download = 'cv.pdf';
         link.click();
         v.reset()
+        this.resetFormData(); 
+        this.currentStep = 1;
       },(error:HttpErrorResponse)=>{
         alert("error")
         console.log(error.error);
@@ -111,7 +113,19 @@ selectedLanguage: any;
       
   }
 
+  resetFormData() {
+    this.personalInfo = { name: '', email: '', phone: '',linkedin:'',github:'',position:'' };
+    this.education = [{ degree: '', institution: '', startDate: '', endDate: '' }];
+    this.workExperience = [{ position: '', company: '', startDate: '', endDate: '', description: '' }];
+    this.skills = '';
+    this.certifications= [{ title: '', institution: '' }];
+    this.languagesSpoken = [{lang:""}];
+    this.projects = [{ projectName: '', startDate: '', endDate: '', description: '', toolsUsed: '' }];
+    this.selectedImage = null; // Store selected image file
+    this.selectedLanguage= null;
+    this.organizations=[{ name: '', role: '' }];
 
+  }
 
   currentStep = 1;
   errorMessage: string = '';  // Le message d'erreur
@@ -143,10 +157,6 @@ selectedLanguage: any;
         this.errorMessage = 'Please complete all required fields.';
       }
     }
-  }
-  isPage1Valid(cvForm: any): boolean {
-    const { name, email, phone } = this.personalInfo;
-    return name && email && phone && cvForm.form.valid;
   }
 
   previousStep() {

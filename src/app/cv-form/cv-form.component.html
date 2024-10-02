@@ -179,9 +179,6 @@
             class="form-control"
           />
         </div>
-      </div>
-
-      <div *ngIf="currentStep === 2">
         <h3 class="text-info">Education</h3>
         <div
           *ngFor="let edu of education; let i = index"
@@ -290,6 +287,10 @@
         >
           Add Education
         </button>
+      </div>
+
+      <div *ngIf="currentStep === 2">
+
   
         <!-- Work Experience Section -->
         <h3 class="text-info">Work Experience</h3>
@@ -449,13 +450,6 @@
             Skills are required.
           </div>
         </div>
-      </div>
-      <!-- Education Section -->
-    
-
-      <!-- Languages Section -->
-      <!-- Languages Section -->
-      <div *ngIf="currentStep === 3">
         <h3 class="text-info">Languages Spoken</h3>
         <div
           *ngFor="let lang of languagesSpoken; let i = index"
@@ -500,6 +494,14 @@
           Add Language
         </button>
   
+      </div>
+      <!-- Education Section -->
+    
+
+      <!-- Languages Section -->
+      <!-- Languages Section -->
+      <div *ngIf="currentStep === 3">
+
         <!-- Projects Section -->
         <h3 class="text-info">Projects</h3>
         <div
