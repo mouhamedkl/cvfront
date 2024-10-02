@@ -107,11 +107,25 @@ selectedLanguage: any;
         console.log(error.error);
         this.isLoading = false;
       });
+      
   }
 
 
-  
 
+  currentStep = 1;
 
+  // Navigate to the next step
+  nextStep() {
+    if (this.currentStep < 3) {
+      this.currentStep++;
+    }
+  }
+
+  // Navigate to the previous step
+  previousStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  }
 
 }
