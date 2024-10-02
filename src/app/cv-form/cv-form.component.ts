@@ -13,6 +13,8 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 })
 export class CvFormComponent {
 organizations: any[]=[{ name: '', role: '' }];
+  errorMessageimage: string="";
+  msgemail: string="";
 addOrganization() {
   this.organizations.push({ name: '', role: '' })
 }
@@ -130,9 +132,15 @@ selectedLanguage: any;
   currentStep = 1;
   errorMessage: string = '';  // Le message d'erreur
   // Navigate to the next step
+
   nextStep(cvForm: NgForm) {
+    //const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+ 
     // Réinitialiser le message d'erreur à chaque tentative de validation
     this.errorMessage = '';
+    this.errorMessageimage = '';
+   //
 
     if (this.currentStep === 1) {
       if (cvForm.valid && this.selectedImage != null) {
@@ -141,9 +149,16 @@ selectedLanguage: any;
         Object.keys(cvForm.controls).forEach(key => {
           cvForm.controls[key].markAsTouched();
         });
+        // if (!emailPattern.test(this.personalInfo.email)) {
+        //   this.msgemail='Please enter a valid email address.';
+         
+        // }else{
+        //   this.msgemail=""
+        // }
         if (this.selectedImage == null) {
-          this.errorMessage = 'Please upload an image.';
+          this.errorMessageimage = 'Please upload an image.';
         } else {
+          this.errorMessageimage=""
           this.errorMessage = 'Please fill in all required fields.';
         }
       }
@@ -164,7 +179,6 @@ selectedLanguage: any;
       this.currentStep--;
     }
   }
-
 
 
 }

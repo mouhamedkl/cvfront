@@ -8,9 +8,7 @@
     <h2 class="text-center text-primary mb-4">Create Your CV</h2>
     <form #cvForm="ngForm" (ngSubmit)="generateCV(cvForm)" novalidate>
       <!-- Personal Information Section -->
-      <div *ngIf="errorMessage" class="alert alert-danger">
-        {{ errorMessage }}
-      </div>
+ 
       <div *ngIf="currentStep === 1">
         <div class="mb-3">
             <label for="language" class="form-label">Select Language:</label>
@@ -64,17 +62,22 @@
               <label for="email" class="form-label">Email:</label>
               <input
                 type="email"
-                [(ngModel)]="personalInfo['email']"
+                [(ngModel)]="personalInfo.email"
                 name="email"
                 id="email"
                 class="form-control"
                 required
                 placeholder="example@mail.com"
                 #emailInput="ngModel"
+              
               />
 
-              <div *ngIf="cvForm.controls['email']?.touched && cvForm.controls['email']?.invalid" class="text-danger">
-                A valid email is required.
+              <div      *ngIf="
+              cvForm.controls['email']?.invalid &&
+              (cvForm.controls['email']?.touched || cvForm.submitted) 
+            "
+            class="text-danger"class="text-danger">
+            Email  is required.
               </div>
             </div>
           </div>
@@ -179,6 +182,14 @@
             class="form-control"
           />
         </div>
+        <div
+        *ngIf="
+          errorMessageimage
+        "
+        class="text-danger"
+      >
+        {{errorMessageimage}}
+      </div>
         <h3 class="text-info">Education</h3>
         <div
           *ngFor="let edu of education; let i = index"
@@ -744,13 +755,18 @@
 
       <!-- Submit Button -->
       <div class="d-grid gap-2">
+        <div *ngIf="errorMessage" class="alert alert-danger ">
+            {{ errorMessage }}
+          </div> 
         <div class="d-flex justify-content-between mt-3">
             <button type="button" class="btn btn-secondary" (click)="previousStep()" *ngIf="currentStep > 1">Back</button>
             <button type="button" class="btn btn-primary" (click)="nextStep(cvForm)" *ngIf="currentStep < 3">Next</button>
             <button type="submit" class="btn btn-success"  [disabled]="cvForm.invalid || selectedImage== null" *ngIf="currentStep === 3">Submit</button>
-          </div>
-      
+         
+        </div>
+        
       </div>
+    
     </form>
   </div>
 </div>
