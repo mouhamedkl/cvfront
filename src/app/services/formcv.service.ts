@@ -13,4 +13,5 @@ export class FormcvService {
   addcv(formData:FormData):Observable<{ pdf: string }>{
 return  this.http.post<{ pdf: string }>(this.url, formData)
   }
+
 }
