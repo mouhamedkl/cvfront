@@ -185,7 +185,7 @@ export class CvFormComponent implements OnInit {
           ...project,
           toolsUsed: project.toolsUsed.split(',').map((tool: any) => tool.trim())
         })),
-      language: this.cvForm.value.language, // Dynamically set the selected language
+      language: this.cvForm.value.language,
       certifications: this.certifications.value,
       organizations: this.organizations.value
     };
