@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
-    apiUrl: process.env['API_URL'],
+    apiUrl: 'https://cv-red-eight.vercel.app/api',
     
 };
