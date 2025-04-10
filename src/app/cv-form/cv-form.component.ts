@@ -84,12 +84,16 @@ export class CvFormComponent implements OnInit {
 
   addProject() {
     const projectGroup = this.fb.group({
-      projectName: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
-      description: ['', Validators.required],
-      toolsUsed: ['', Validators.required]
+      projectName: ['',Validators.required],
+      startDate: ['',Validators.required],
+      endDate: ['',Validators.required],
+      description: ['',Validators.required],
+      toolsUsed: ['',Validators.required]
     });
+    const endDateControl = this.projects.get('endDate');
+    if (!endDateControl?.value) {
+      endDateControl?.setValue('present');
+    }
     this.projects.push(projectGroup);
   }
 
@@ -129,6 +133,10 @@ export class CvFormComponent implements OnInit {
       endDate: ['', Validators.required],
       description: ['', Validators.required],
     });
+    const endDateControl = this.workExperience.get('endDate');
+    if (!endDateControl?.value) {
+      endDateControl?.setValue('present');
+    }
     this.workExperience.push(work);
   }
 
@@ -154,6 +162,10 @@ export class CvFormComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
     });
+    const endDateControl = eduGroup.get('endDate');
+    if (!endDateControl?.value) {
+      endDateControl?.setValue('present');
+    }
     this.education.push(eduGroup);
   }
 
@@ -218,6 +230,7 @@ nextStep() {
   if (this.currentStep === 1) {
     if (this.selectedImage != null && this.cvForm.valid) {
       this.currentStep++;
+      
     } else {
       this.cvForm.markAllAsTouched()
     }
